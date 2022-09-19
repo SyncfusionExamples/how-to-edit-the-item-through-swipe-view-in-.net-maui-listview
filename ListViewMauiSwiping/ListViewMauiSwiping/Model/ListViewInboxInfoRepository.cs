@@ -37,8 +37,8 @@ namespace ListViewMauiSwiping
                     Subject = Subject[i],
                     Description = Descriptions[i],
                     Date = Month[i] + " " + (i + 8).ToString(),
-                    InboxImage = ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.InboxIcon.png"),
-                    FavoriteImage = ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.Favorites1.png")
+                    InboxImage = ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.inboxicon.png"),
+                    FavoriteImage = ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.favorites1.png")
                 };
                 record.IsFavorite = (i < 7 && i % 2 == 0) ? true : false;
                 empInfo.Add(record);

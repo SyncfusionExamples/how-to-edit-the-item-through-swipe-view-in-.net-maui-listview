@@ -12,9 +12,9 @@ namespace ListViewMauiSwiping
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if ((bool)value)
-                return ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.Favorites1.png");
+                return ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.favorites1.png");
             else
-                return ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.InboxIcon.png");
+                return ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.inboxicon.png");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

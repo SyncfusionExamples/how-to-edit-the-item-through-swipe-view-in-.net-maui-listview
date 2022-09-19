@@ -49,37 +49,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\add.png" />
-	  <MauiImage Remove="Resources\Images\Delete.png" />
-	  <MauiImage Remove="Resources\Images\Favorites.png" />
-	  <MauiImage Remove="Resources\Images\Favorites1.png" />
-	  <MauiImage Remove="Resources\Images\InboxIcon.png" />
-	  <MauiImage Remove="Resources\Images\LeftSwipIcon.png" />
+	  <EmbeddedResource Include="Resources\Images\favorites1.png" />
+	  <EmbeddedResource Include="Resources\Images\inboxicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\add.png" />
-	  <None Remove="Resources\Images\Delete.png" />
-	  <None Remove="Resources\Images\Favorites.png" />
-	  <None Remove="Resources\Images\Favorites1.png" />
-	  <None Remove="Resources\Images\InboxIcon.png" />
-	  <None Remove="Resources\Images\LeftSwipIcon.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Images\add.png" />
-	  <EmbeddedResource Include="Resources\Images\Delete.png" />
-	  <EmbeddedResource Include="Resources\Images\Favorites.png" />
-	  <EmbeddedResource Include="Resources\Images\Favorites1.png" />
-	  <EmbeddedResource Include="Resources\Images\InboxIcon.png" />
-	  <EmbeddedResource Include="Resources\Images\LeftSwipIcon.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Syncfusion.Maui.Core" Version="20.21.105" />
-	  <PackageReference Include="Syncfusion.Maui.DataSource" Version="20.21.5" />
-	  <PackageReference Include="Syncfusion.Maui.GridCommon" Version="20.21.5" />
-	  <PackageReference Include="Syncfusion.Maui.ListView" Version="20.21.78" />
+	  <PackageReference Include="Syncfusion.Maui.Core" Version="*" />
+	  <PackageReference Include="Syncfusion.Maui.DataSource" Version="*" />
+	  <PackageReference Include="Syncfusion.Maui.GridCommon" Version="*" />
+	  <PackageReference Include="Syncfusion.Maui.ListView" Version="*" />
 	</ItemGroup>
 
 	<ItemGroup>
