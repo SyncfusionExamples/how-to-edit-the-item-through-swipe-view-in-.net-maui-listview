@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ListViewMauiSwiping.SwipeEditPage.EditPage"
+             Title="EditPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+
+        </Grid.ColumnDefinitions>
+        <Label Text="Title"
+               Grid.Row="0"
+               Grid.Column="0" />
+        <Label Text="Description"
+               Grid.Row="1"
+               Grid.Column="0" />
+        <Label Text="Subject"
+               Grid.Row="2"
+               Grid.Column="0" />
+        <Label Text="Date"
+               Grid.Row="3"
+               Grid.Column="0" />
+
+
+        <Editor x:Name="titleeditor"
+                Text="{Binding Title}"
+                Grid.Row="0"
+                Grid.Column="1" />
+        <Editor x:Name="desceditor"
+                Text="{Binding Description}"
+                Grid.Row="1"
+                Grid.Column="1" />
+        <Editor x:Name="subeditor"
+                Text="{Binding Subject}"
+                Grid.Row="2"
+                Grid.Column="1" />
+        <Editor x:Name="dateeditor"
+                Text="{Binding Date}"
+                Grid.Row="3"
+                Grid.Column="1" />
+
+
+        <Button Text="Save"
+                Grid.Row="4"
+                Grid.Column="0"
+                x:Name="savebtn"
+                Clicked="savebtn_clicked" />
+        <Button Text="Cancel"
+                Grid.Row="4"
+                Grid.Column="1"
+                x:Name="cancelbtn"
+                Clicked="cancelbtn_clicked" />
+    </Grid>
+</ContentPage>
