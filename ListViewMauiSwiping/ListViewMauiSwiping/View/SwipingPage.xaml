@@ -4,139 +4,191 @@
              x:Class="ListViewMauiSwiping.View.SwipingPage"
              Title="SwipingPage"
              xmlns:local="clr-namespace:ListViewMauiSwiping"
-             xmlns:sync="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView">
-    <ContentPage.BindingContext>
-        <local:ListViewSwipingViewModel x:Name="viewModel" />
-    </ContentPage.BindingContext>
-
+             xmlns:ListView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView">
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:CustomConverter x:Key="EventArgs" />
-            <local:SwipingBoolToImageConverter x:Key="BoolToImageConverter" />
-            <DataTemplate x:Name="HeaderTemplate"
-                          x:Key="HeaderTemplate">
-                <Grid BackgroundColor="#4CA1FE"
-                      HeightRequest="45">
-                    <Label LineBreakMode="NoWrap"
-                           Margin="10"
-                           Text="Inbox"
-                           FontAttributes="Bold"
-                           FontSize="18"
-                           TextColor="White"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
-                </Grid>
-            </DataTemplate>
-            <DataTemplate x:Name="ItemTemplate"
-                          x:Key="ItemTemplate">
-                <Grid x:Name="grid">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="1" />
-                    </Grid.RowDefinitions>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid Padding="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <Label LineBreakMode="NoWrap"
-                                   TextColor="#474747"
-                                   FontAttributes="Bold"
-                                   FontSize="{OnPlatform WinUI={OnIdiom Phone=18, Tablet=20},Android={OnIdiom Phone=17, Tablet=19},iOS={OnIdiom Phone=18, Tablet=20}}"
-                                   Text="{Binding Title}">   
-                            </Label>
-                            <Label LineBreakMode="NoWrap"
-                                   TextColor="#474747"
-                                   Grid.Row="1"
-                                   FontSize="{OnPlatform WinUI={OnIdiom Phone=16, Tablet=20},Android={OnIdiom Phone=14, Tablet=16},iOS={OnIdiom Phone=14, Tablet=16}}"
-                                   Text="{Binding Subject}">
-                            </Label>
-                            <Label TextColor="#474747"
-                                   Grid.Row="2"
-                                   LineBreakMode="NoWrap"
-                                   FontSize="{OnPlatform WinUI={OnIdiom Phone=12, Tablet=12},Android={OnIdiom Phone=12, Tablet=14},iOS={OnIdiom Phone=12, Tablet=14}}"
-                                   Text="{Binding Description}">
-                            </Label>
-                        </Grid>
-                        <Grid Grid.Column="1"
-                              Padding="5,10,5,10"
-                              HorizontalOptions="End">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-                            <Label TextColor="#474747"
-                                   LineBreakMode="NoWrap"
-                                   FontSize="{OnPlatform WinUI={OnIdiom Phone=12, Tablet=12},Android={OnIdiom Phone=12, Tablet=14},iOS={OnIdiom Phone=12, Tablet=14}}"
-                                   Text="{Binding Date}">
-                            </Label>
-
-                            <Image x:Name="NormalImage"
-                                   Grid.Row="1"
-                                   HorizontalOptions="Center"
-                                   HeightRequest="30"
-                                   WidthRequest="30"
-                                   Source="{Binding Path=IsFavorite, Converter={StaticResource BoolToImageConverter}}"
-                                   VerticalOptions="Center" />
-                        </Grid>
-                    </Grid>
-                    <Frame Grid.Row="1"
-                           BorderColor="#E4E4E4"
-                           HasShadow="True"
-                           HeightRequest="1" />
-                </Grid>
-            </DataTemplate>
-        </ResourceDictionary>
+        <local:FavoriteColorConverter x:Key="favoriteIconColorConverter" />
+        <local:FavoriteConverter x:Key="favoriteIconConverter" />
+        <local:TextColorConverter x:Key="textColorConverter" />
     </ContentPage.Resources>
 
-    <sync:SfListView x:Name="listView"
-                     ItemsSource="{Binding InboxInfo}"
-                     ItemTemplate="{StaticResource ItemTemplate}"
-                     HeaderTemplate="{StaticResource HeaderTemplate}"
-                     AllowSwiping="True"
-                     SelectionMode="None"
-                     IsStickyHeader="True"
-                     SwipeOffset="80"
-                     SwipeThreshold="30"
-                     ItemSize="100"
-                     HeaderSize="70">
+    <ContentPage.Behaviors>
+        <local:ListViewSwipingBehavior />
+    </ContentPage.Behaviors>
 
-        <sync:SfListView.Behaviors>
-            <local:EventToCommandBehavior EventName="Loaded"
-                                          Command="{Binding LoadedCommand}"
-                                          Converter="{StaticResource EventArgs}"/>
-            <local:EventToCommandBehavior EventName="SwipeStarting"
-                                          Command="{Binding SwipeStartingCommand}"
-                                          Converter="{StaticResource EventArgs}"/>
-            <local:EventToCommandBehavior EventName="SwipeEnded"
-                                          Command="{Binding SwipeEndedCommand}"
-                                          Converter="{StaticResource EventArgs}"/>
-        </sync:SfListView.Behaviors>
+    <ContentPage.Content>
+        <Grid x:Name="mainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Text="Inbox"
+                   FontSize="18"
+                   FontFamily="Roboto-Medium"
+                   Margin="16,0,0,0"
+                   VerticalOptions="Center" />
+            <ListView:SfListView Grid.Row="1"
+                                 x:Name="listView"
+                                 ItemsSource="{Binding InboxInfo}"
+                                 AllowSwiping="True"
+                                 SwipeThreshold="50"
+                                 SwipeOffset="100"
+                                 SelectionMode="Multiple"
+                                 SelectionGesture="LongPress"
+                                 ScrollBarVisibility="Always"
+                                 AutoFitMode="Height">
+                <ListView:SfListView.EndSwipeTemplate>
+                    <DataTemplate x:Name="EndSwipeTemplate">
+                        <Grid x:Name="SwipeGrid"
+                              BackgroundColor="#DC595F"
+                              HorizontalOptions="Fill"
+                              VerticalOptions="Fill">
+                            <Label Grid.Row="0"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   BackgroundColor="Transparent"
+                                   Text="EditItem" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.EditCommand,Source={x:Reference SwipeGrid}}"
+                                                      CommandParameter="{x:Reference SwipeGrid}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </DataTemplate>
+                </ListView:SfListView.EndSwipeTemplate>
+                <ListView:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,16,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="72" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
 
-        <sync:SfListView.EndSwipeTemplate>
-            <DataTemplate x:Name="EndSwipeTemplate">
-                <Grid x:Name="SwipeGrid"
-                      BackgroundColor="#DC595F"
-                      HorizontalOptions="Fill"
-                      VerticalOptions="Fill">
-                    <Label Grid.Row="0"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           BackgroundColor="Transparent"
-                           Text="EditItem" />
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Path=BindingContext.EditCommand,Source={x:Reference SwipeGrid}}"
-                                              CommandParameter="{x:Reference SwipeGrid}" />
-                    </Grid.GestureRecognizers>
-                </Grid>
-            </DataTemplate>
-        </sync:SfListView.EndSwipeTemplate>
-    </sync:SfListView>
+                            <Grid Grid.Row="0"
+                                  Grid.Column="0"
+                                  Grid.RowSpan="2"
+                                  HeightRequest="40"
+                                  WidthRequest="40"
+                                  HorizontalOptions="Center"
+                                  VerticalOptions="Center">
+                                <Image Source="{Binding Image}"
+                                       HeightRequest="40"
+                                       WidthRequest="40" />
+                                <Label Text="{Binding ProfileName}"
+                                       TextColor="#FFFFFF"
+                                       FontSize="16"
+                                       HorizontalTextAlignment="Center"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontFamily="Roboto-Regular"
+                                       CharacterSpacing="0.25" />
+                            </Grid>
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{Binding Subject}"
+                                   FontFamily="Roboto-Medium"
+                                   FontSize="14"
+                                   TextColor="#000000"
+                                   LineBreakMode="TailTruncation"
+                                   CharacterSpacing="0.25" />
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding Description}"
+                                   FontFamily="Roboto-Regular"
+                                   FontSize="14"
+                                   TextColor="{Binding IsOpened,Converter={StaticResource textColorConverter}}"
+                                   Margin="0,4,0,0"
+                                   LineBreakMode="TailTruncation"
+                                   CharacterSpacing="0.25" />
+                            <Grid Grid.Row="2"
+                                  Grid.Column="1"
+                                  Margin="0,12,0,0"
+                                  IsVisible="{Binding IsAttached}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border Stroke="LightGray"
+                                        HorizontalOptions="Start"
+                                        BackgroundColor="Transparent"
+                                        StrokeThickness="1">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="4" />
+                                    </Border.StrokeShape>
+
+                                    <Grid Margin="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Column="0"
+                                               Text="&#xe717;"
+                                               FontSize="18"
+                                               TextColor="#DD0000"
+                                               FontAttributes="Bold"
+                                               FontFamily='{OnPlatform Android=ListViewFontIcons.ttf#,UWP=ListViewFontIcons.ttf#ListViewFontIcons,MacCatalyst=ListViewFontIcons,iOS=ListViewFontIcons}'
+                                               VerticalOptions="Center"
+                                               VerticalTextAlignment="Center" />
+                                        <Label Grid.Column="1"
+                                               Text="Image Attached"
+                                               FontSize="14"
+                                               FontFamily="Roboto-Medium"
+                                               TextColor="#666666"
+                                               Margin="4,0,0,0"
+                                               CharacterSpacing="0.25"
+                                               VerticalOptions="Center"
+                                               VerticalTextAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+
+                            <BoxView Grid.Row="4"
+                                     Grid.ColumnSpan="3"
+                                     Color="LightGray"
+                                     HeightRequest="0.8"
+                                     VerticalOptions="End"
+                                     Margin="0,14,0,0" />
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="2"
+                                   Text="{Binding Date}"
+                                   TextColor="#666666"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="End"
+                                   HorizontalTextAlignment="End"
+                                   FontSize="10"
+                                   Margin="0,0,16,0"
+                                   CharacterSpacing="0.15" />
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="2"
+                                   Grid.RowSpan="2"
+                                   Margin="0,0,16,0"
+                                   Text="{Binding IsFavorite,Converter={StaticResource favoriteIconConverter}}"
+                                   FontFamily='{OnPlatform Android=ListViewFontIcons.ttf#,UWP=ListViewFontIcons.ttf#ListViewFontIcons,MacCatalyst=ListViewFontIcons,iOS=ListViewFontIcons}'
+                                   TextColor="{Binding IsFavorite,Converter={StaticResource favoriteIconColorConverter}}"
+                                   HorizontalOptions="End"
+                                   FontSize="18"
+                                   VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.FavoritesImageCommand, Source={x:Reference listView}}"
+                                                          CommandParameter="{Binding .}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </DataTemplate>
+                </ListView:SfListView.ItemTemplate>
+            </ListView:SfListView>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

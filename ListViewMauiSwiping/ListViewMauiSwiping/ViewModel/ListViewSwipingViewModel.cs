@@ -1,20 +1,43 @@
-﻿using Syncfusion.Maui.ListView;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ListViewMauiSwiping
 {
-    public class ListViewSwipingViewModel
+    public class ListViewSwipingViewModel : INotifyPropertyChanged
     {
         #region Fields
 
-        private ObservableCollection<ListViewInboxInfo> inboxInfo;
+        private ObservableCollection<ListViewInboxInfo>? inboxInfo;
+        private Command? favoritesImageCommand;
 
-        private SfListView ListView;
+        #endregion
+
+
+        #region Interface Member
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void OnPropertyChanged(string name)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+
+        #endregion
+
+        #region EventHandler
+        public event EventHandler<ResetEventArgs>? ResetSwipeView;
+
+        protected virtual void OnResetSwipe(ResetEventArgs e)
+        {
+            EventHandler<ResetEventArgs>? handler = ResetSwipeView;
+            handler?.Invoke(this, e);
+        }
 
         #endregion
 
@@ -29,11 +52,16 @@ namespace ListViewMauiSwiping
 
         #region Properties
 
-
-        public ObservableCollection<ListViewInboxInfo> InboxInfo
+        public ObservableCollection<ListViewInboxInfo>? InboxInfo
         {
             get { return inboxInfo; }
-            set { this.inboxInfo = value; }
+            set { this.inboxInfo = value; OnPropertyChanged("InboxInfo"); }
+        }
+
+        public Command? FavoritesImageCommand
+        {
+            get { return favoritesImageCommand; }
+            protected set { favoritesImageCommand = value; }
         }
 
         #endregion
@@ -42,70 +70,32 @@ namespace ListViewMauiSwiping
 
         private void GenerateSource()
         {
-            swipeStartingCommand = new Command<Syncfusion.Maui.ListView.SwipeStartingEventArgs>(OnSwipeStarted);
-            swipeEndedCommand = new Command<Syncfusion.Maui.ListView.SwipeEndedEventArgs>(OnSwipeEnded);
-            loadedCommand = new Command<SfListView>(OnListViewLoaded);
-
             ListViewInboxInfoRepository inboxinfo = new ListViewInboxInfoRepository();
             inboxInfo = inboxinfo.GetInboxInfo();
+            favoritesImageCommand = new Command(SetFavorites);;
         }
 
-        private void OnSwipeStarted(SwipeStartingEventArgs obj)
+        private void SetFavorites(object item)
         {
-            itemIndex = -1;
-        }
-
-
-        #endregion
-
-        #region Command
-
-        #region Fields
-
-        int itemIndex = -1;
-        Command<SfListView> loadedCommand;
-        Command<Syncfusion.Maui.ListView.SwipeStartingEventArgs> swipeStartingCommand;
-        Command<Syncfusion.Maui.ListView.SwipeEndedEventArgs> swipeEndedCommand;
-
-        #endregion
-
-        #region Properties
-
-        public Command<SwipeStartingEventArgs> SwipeStartingCommand
-        {
-            get { return swipeStartingCommand; }
-            protected set { swipeStartingCommand = value; }
-        }
-
-        public Command<Syncfusion.Maui.ListView.SwipeEndedEventArgs> SwipeEndedCommand
-        {
-            get { return swipeEndedCommand; }
-            protected set { swipeEndedCommand = value; }
-        }
-
-        public Command<SfListView> LoadedCommand
-        {
-            get { return loadedCommand; }
-            protected set { loadedCommand = value; }
-        }
-
-
-        #endregion
-
-        #region Methods
-
-        public void OnListViewLoaded(SfListView listView)
-        {
-            ListView = listView;
-        }
-
-        public void OnSwipeEnded(Syncfusion.Maui.ListView.SwipeEndedEventArgs eventArgs)
-        {
-            itemIndex = eventArgs.Index;
+            var listViewItem = item as ListViewInboxInfo;
+            if ((bool)listViewItem!.IsFavorite)
+            {
+                listViewItem.IsFavorite = false;
+            }
+            else
+            {
+                listViewItem.IsFavorite = true;
+            }
+            OnResetSwipe(new ResetEventArgs());
         }
 
         #endregion
 
+        #region ResetEvent
+        public class ResetEventArgs : EventArgs
+        {
+
+        }
         #endregion
     }
 }
