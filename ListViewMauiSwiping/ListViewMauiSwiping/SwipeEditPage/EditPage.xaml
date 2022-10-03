@@ -31,7 +31,7 @@
 
 
         <Editor x:Name="titleeditor"
-                Text="{Binding Title}"
+                Text="{Binding ProfileName}"
                 Grid.Row="0"
                 Grid.Column="1" />
         <Editor x:Name="desceditor"

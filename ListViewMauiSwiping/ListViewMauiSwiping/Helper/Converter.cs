@@ -7,14 +7,50 @@ using System.Threading.Tasks;
 
 namespace ListViewMauiSwiping
 {
-    public class SwipingBoolToImageConverter : IValueConverter
+    public class FavoriteConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if ((bool)value)
-                return ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.favorites1.png");
+                return "\ue71A";
             else
-                return ImageSource.FromResource("ListViewMauiSwiping.Resources.Images.inboxicon.png");
+                return "\ue71B";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class FavoriteColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((bool)value)
+                return Color.FromArgb("#F9BC16");
+            else
+                return Color.FromArgb("#666666");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TextColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                if ((bool)value)
+                    return Color.FromArgb("#666666");
+                else
+                    return Color.FromArgb("#000000");
+            }
+            return Color.FromArgb("#000000");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

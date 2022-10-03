@@ -12,12 +12,13 @@ namespace ListViewMauiSwiping
     {
         #region Fields
 
-        private string title;
-        private string subject;
-        private string desc;
-        private string date;
-        private ImageSource image;
-        private ImageSource favImage;
+        private string? profileName;
+        private string? subject;
+        private string? desc;
+        private string? date;
+        private string? image;
+        private bool? isAttached;
+        private bool isOpened;
         private bool isFavorite = true;
         public Command<object> EditCommand { get; set; }
 
@@ -34,17 +35,17 @@ namespace ListViewMauiSwiping
 
         #region Properties
 
-        public string Title
+        public string? ProfileName
         {
-            get { return title; }
+            get { return profileName; }
             set
             {
-                title = value;
-                OnPropertyChanged("Title");
+                profileName = value;
+                OnPropertyChanged("ProfileName");
             }
         }
 
-        public string Subject
+        public string? Subject
         {
             get
             {
@@ -58,7 +59,7 @@ namespace ListViewMauiSwiping
             }
         }
 
-        public string Description
+        public string? Description
         {
             get
             {
@@ -72,7 +73,7 @@ namespace ListViewMauiSwiping
             }
         }
 
-        public string Date
+        public string? Date
         {
             get
             {
@@ -86,23 +87,27 @@ namespace ListViewMauiSwiping
             }
         }
 
-        public ImageSource InboxImage
+        public string? Image
         {
-            get { return this.image; }
+            get
+            {
+                return image;
+            }
+
             set
             {
-                this.image = value;
-                OnPropertyChanged("InboxImage");
+                image = value;
+                OnPropertyChanged("Image");
             }
         }
 
-        public ImageSource FavoriteImage
+        public bool? IsAttached
         {
-            get { return this.favImage; }
+            get { return isAttached; }
             set
             {
-                this.favImage = value;
-                OnPropertyChanged("FavoriteImage");
+                isAttached = value;
+                OnPropertyChanged("IsAttached");
             }
         }
 
@@ -116,11 +121,21 @@ namespace ListViewMauiSwiping
             }
         }
 
+        public bool IsOpened
+        {
+            get { return isOpened; }
+            set
+            {
+                isOpened = value;
+                OnPropertyChanged("IsOpened");
+            }
+        }
+
         #endregion
 
         #region Interface Member
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public void OnPropertyChanged(string name)
         {
